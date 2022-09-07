@@ -2,15 +2,14 @@ package com.kube.musicplayer
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.kube.musicplayer.databinding.ActivityPlayerBinding
 import com.kube.musicplayer.databinding.ActivityPlaylistBinding
 
-class PlayerActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityPlayerBinding
+class PlaylistActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityPlaylistBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.Theme_MusicPlayer)
-        binding=ActivityPlayerBinding.inflate(layoutInflater)
+        binding=ActivityPlaylistBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }
 }
