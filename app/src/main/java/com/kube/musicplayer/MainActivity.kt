@@ -22,13 +22,19 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var toogle: ActionBarDrawerToggle
     private lateinit var songAdapter: SongAdapter
-    companion object{
-        lateinit var  songListMainActivity:ArrayList<Song>
+
+    companion object {
+        lateinit var songListMainActivity: ArrayList<Song>
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initializeLayout()
-        adapter()
+        setTheme(R.style.coolPinkNav)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        if (requestRunTimePermission())
+            initializeLayout()
+
 
         binding.favoriteBtn.setOnClickListener {
             val intent = Intent(this@MainActivity, FavoriteActivity::class.java)
@@ -40,14 +46,14 @@ class MainActivity : AppCompatActivity() {
         }
         binding.shuttleBtn.setOnClickListener {
             val intent = Intent(this@MainActivity, PlayerActivity::class.java)
+            intent.putExtra("index", 0)
+            intent.putExtra("class", "MainActivity")
             startActivity(intent)
         }
         binding.navView.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.navFeedBack -> Toast.makeText(baseContext, "FeedBack", Toast.LENGTH_SHORT)
-                    .show()
-                R.id.navSettings -> Toast.makeText(baseContext, "Settings", Toast.LENGTH_SHORT)
-                    .show()
+                R.id.navFeedBack -> Toast.makeText(baseContext, "FeedBack", Toast.LENGTH_SHORT).show()
+                R.id.navSettings -> Toast.makeText(baseContext, "Settings", Toast.LENGTH_SHORT).show()
                 R.id.navAbout -> Toast.makeText(baseContext, "About", Toast.LENGTH_SHORT).show()
                 R.id.navExit -> exitProcess(1)
             }
@@ -56,10 +62,10 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun requestRunTimePermission() {
+    private fun requestRunTimePermission(): Boolean {
         if (ActivityCompat.checkSelfPermission(
                 this,
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE ,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(
@@ -67,7 +73,9 @@ class MainActivity : AppCompatActivity() {
                 arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE),
                 13
             )
+            return false
         }
+        return true
     }
 
     override fun onRequestPermissionsResult(
@@ -77,13 +85,10 @@ class MainActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 13) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                adapter()
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show()
-
-            }
-
-            else
+                initializeLayout()
+              } else
                 ActivityCompat.requestPermissions(
                     this,
                     arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE),
@@ -101,19 +106,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initializeLayout() {
-        requestRunTimePermission()
-        setTheme(R.style.coolPinkNav)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
         //for nav draver
         toogle = ActionBarDrawerToggle(this, binding.root, R.string.open, R.string.close)
         binding.root.addDrawerListener(toogle)
         toogle.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        adapter()
     }
 
     private fun adapter() {
-        songListMainActivity=getAllAudio()
+        songListMainActivity = getAllAudio()
         binding.songRv.setHasFixedSize(true)
         binding.songRv.setItemViewCacheSize(13)
         binding.songRv.layoutManager = LinearLayoutManager(this@MainActivity)
@@ -147,16 +149,22 @@ class MainActivity : AppCompatActivity() {
         if (cursor != null) {
             if (cursor.moveToFirst())
                 do {
-                    val titleC = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE))
+                    val titleC =
+                        cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE))
                     val idC = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media._ID))
-                    val albumC = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM))
-                    val artistC = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST))
+                    val albumC =
+                        cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM))
+                    val artistC =
+                        cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST))
                     val pathC = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA))
-                    val duration = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION))
-                    val albumIdC = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID)).toString()
+                    val duration =
+                        cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION))
+                    val albumIdC =
+                        cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID))
+                            .toString()
                     val uri = Uri.parse("content://media/external/audio/albumart")
-                    val artUriC = Uri.withAppendedPath(uri,albumIdC).toString()
-                    val song = Song(idC, titleC, albumC, artistC, duration, pathC,artUriC)
+                    val artUriC = Uri.withAppendedPath(uri, albumIdC).toString()
+                    val song = Song(idC, titleC, albumC, artistC, duration, pathC, artUriC)
                     val file = File(song.path)
                     if (file.exists())
                         tempList.add(song)
