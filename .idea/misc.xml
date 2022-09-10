@@ -4,8 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/drawable/arrow_back.xml" value="0.1905" />
+        <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/drawable/before_icon.xml" value="0.1985" />
         <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/drawable/favorite_icon.xml" value="0.1445" />
         <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/drawable/library_music_icon.xml" value="0.1445" />
+        <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/drawable/next_icon.xml" value="0.1985" />
+        <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/drawable/pause_icon.xml" value="0.1985" />
+        <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/drawable/play_icon.xml" value="0.1985" />
         <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/drawable/shuffle_icon.xml" value="0.129" />
         <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/drawable/splash_screen.xml" value="0.1255" />
         <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/layout/activity_favorite.xml" value="0.176" />
