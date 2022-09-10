@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var toogle: ActionBarDrawerToggle
     private lateinit var songAdapter: SongAdapter
     companion object{
-       private lateinit var  SongListMA:ArrayList<Song>
+        lateinit var  songListMainActivity:ArrayList<Song>
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
     private fun requestRunTimePermission() {
         if (ActivityCompat.checkSelfPermission(
                 this,
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE ,
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(
@@ -77,8 +77,12 @@ class MainActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 13) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                adapter()
                 Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show()
+
+            }
+
             else
                 ActivityCompat.requestPermissions(
                     this,
@@ -109,11 +113,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun adapter() {
-        SongListMA=getAllAudio()
+        songListMainActivity=getAllAudio()
         binding.songRv.setHasFixedSize(true)
         binding.songRv.setItemViewCacheSize(13)
         binding.songRv.layoutManager = LinearLayoutManager(this@MainActivity)
-        songAdapter = SongAdapter(this@MainActivity, SongListMA)
+        songAdapter = SongAdapter(this@MainActivity, songListMainActivity)
         binding.songRv.adapter = songAdapter
         binding.totalSongTv.text = "Total Songs : " + songAdapter.itemCount
     }
