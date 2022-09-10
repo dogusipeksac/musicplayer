@@ -1,5 +1,6 @@
 package com.kube.musicplayer
 
+import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
@@ -22,9 +23,11 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection {
         var songPosition: Int = 0
         var isPlaying: Boolean = false
         var songService:SongService?=null
+        @SuppressLint("StaticFieldLeak")
+        lateinit var binding: ActivityPlayerBinding
     }
 
-    private lateinit var binding: ActivityPlayerBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         startingService()
@@ -98,12 +101,14 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection {
 
     private fun playSong() {
         binding.playPauseBtn.setIconResource(R.drawable.pause_icon)
+        songService!!.showNotification(R.drawable.pause_icon)
         isPlaying = true
         songService!!.mediaPlayer!!.start()
     }
 
     private fun pauseSong() {
         binding.playPauseBtn.setIconResource(R.drawable.play_icon)
+        songService!!.showNotification(R.drawable.play_icon)
         isPlaying = false
         songService!!.mediaPlayer!!.pause()
     }
@@ -130,7 +135,7 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection {
         val binder=service as SongService.MyBinder
         songService=binder.currentService()
         createMediaPlayer()
-        songService!!.showNotification()
+        songService!!.showNotification(R.drawable.pause_icon)
     }
 
     override fun onServiceDisconnected(name: ComponentName?) {
