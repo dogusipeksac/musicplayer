@@ -12,6 +12,7 @@ import androidx.media.app.NotificationCompat
 import com.kube.musicplayer.PlayerActivity
 import com.kube.musicplayer.R
 import com.kube.musicplayer.helper.ImageHelper
+import java.lang.Exception
 
 class SongService : Service() {
 
@@ -93,5 +94,21 @@ class SongService : Service() {
             .addAction(R.drawable.exit_to_app_icon, "Exit", exitPendingIntent)
             .build()
         startForeground(13, notification)
+    }
+
+     fun createMediaPlayer() {
+        try {
+            if (PlayerActivity.songService!!.mediaPlayer == null) PlayerActivity.songService!!.mediaPlayer = MediaPlayer()
+            PlayerActivity.songService!!.mediaPlayer!!.reset()
+            PlayerActivity.songService!!.mediaPlayer!!.setDataSource(PlayerActivity.songListPlayerActivity[PlayerActivity.songPosition].path)
+            PlayerActivity.songService!!.mediaPlayer!!.prepare()
+            PlayerActivity.songService!!.mediaPlayer!!.start()
+            PlayerActivity.isPlaying = true
+            PlayerActivity.binding.playPauseBtn.setIconResource(R.drawable.pause_icon)
+            PlayerActivity.songService!!.showNotification(R.drawable.pause_icon)
+
+        } catch (e: Exception) {
+            return
+        }
     }
 }

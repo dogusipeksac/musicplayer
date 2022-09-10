@@ -1,5 +1,7 @@
 package com.kube.musicplayer.model
 
+import com.kube.musicplayer.PlayerActivity
+
 data class Song(
     val id: String,
     val title: String,
@@ -9,3 +11,14 @@ data class Song(
     val path: String,
     val artUri:String
 )
+fun setSongPosition(increment: Boolean) {
+    if (increment) {
+        if (PlayerActivity.songListPlayerActivity.size - 1 == PlayerActivity.songPosition)
+            PlayerActivity.songPosition = 0
+        else ++PlayerActivity.songPosition
+    } else {
+        if (0 == PlayerActivity.songPosition)
+            PlayerActivity.songPosition = PlayerActivity.songListPlayerActivity.size - 1
+        else --PlayerActivity.songPosition
+    }
+}

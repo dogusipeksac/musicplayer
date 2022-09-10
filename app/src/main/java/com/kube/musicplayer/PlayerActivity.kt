@@ -13,6 +13,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.kube.musicplayer.databinding.ActivityPlayerBinding
 import com.kube.musicplayer.databinding.ActivityPlaylistBinding
 import com.kube.musicplayer.model.Song
+import com.kube.musicplayer.model.setSongPosition
 import com.kube.musicplayer.service.SongService
 import java.lang.Exception
 
@@ -94,6 +95,8 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection {
             songService!!.mediaPlayer!!.start()
             isPlaying = true
             binding.playPauseBtn.setIconResource(R.drawable.pause_icon)
+            songService!!.showNotification(R.drawable.pause_icon)
+
         } catch (e: Exception) {
             return
         }
@@ -119,23 +122,13 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection {
         createMediaPlayer()
     }
 
-    private fun setSongPosition(increment: Boolean) {
-        if (increment) {
-            if (songListPlayerActivity.size - 1 == songPosition)
-                songPosition = 0
-            else ++songPosition
-        } else {
-            if (0 == songPosition)
-                songPosition = songListPlayerActivity.size - 1
-            else --songPosition
-        }
-    }
+
 
     override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
         val binder=service as SongService.MyBinder
         songService=binder.currentService()
         createMediaPlayer()
-        songService!!.showNotification(R.drawable.pause_icon)
+
     }
 
     override fun onServiceDisconnected(name: ComponentName?) {
