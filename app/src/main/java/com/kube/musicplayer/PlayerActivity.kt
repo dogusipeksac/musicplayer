@@ -8,22 +8,25 @@ import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.IBinder
+import android.widget.SeekBar
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.kube.musicplayer.databinding.ActivityPlayerBinding
 import com.kube.musicplayer.databinding.ActivityPlaylistBinding
+import com.kube.musicplayer.helper.DateHelper
 import com.kube.musicplayer.model.Song
 import com.kube.musicplayer.model.setSongPosition
 import com.kube.musicplayer.service.SongService
 import java.lang.Exception
 
-class PlayerActivity : AppCompatActivity(),ServiceConnection {
+class PlayerActivity : AppCompatActivity(), ServiceConnection {
 
     companion object {
         lateinit var songListPlayerActivity: ArrayList<Song>
         var songPosition: Int = 0
         var isPlaying: Boolean = false
-        var songService:SongService?=null
+        var songService: SongService? = null
+
         @SuppressLint("StaticFieldLeak")
         lateinit var binding: ActivityPlayerBinding
     }
@@ -44,11 +47,20 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection {
         binding.nextBtn.setOnClickListener {
             previousOrNextSong(true)
         }
+        binding.songSb.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekbar: SeekBar?, progress: Int, fromUser: Boolean) {
+                if (fromUser) songService!!.mediaPlayer!!.seekTo(progress)
+            }
+
+            override fun onStartTrackingTouch(seekbar: SeekBar?) = Unit
+            override fun onStopTrackingTouch(seekbar: SeekBar?) = Unit
+
+        })
     }
 
     private fun startingService() {
-        val intent=Intent( this,SongService::class.java)
-        bindService(intent,this, BIND_AUTO_CREATE)
+        val intent = Intent(this, SongService::class.java)
+        bindService(intent, this, BIND_AUTO_CREATE)
         startService(intent)
     }
 
@@ -96,6 +108,10 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection {
             isPlaying = true
             binding.playPauseBtn.setIconResource(R.drawable.pause_icon)
             songService!!.showNotification(R.drawable.pause_icon)
+            binding.songDurationStartTv.text=DateHelper().formatDuration(songService!!.mediaPlayer!!.currentPosition.toLong())
+            binding.songDurationEndTv.text=DateHelper().formatDuration(songService!!.mediaPlayer!!.duration.toLong())
+            binding.songSb.progress=0
+            binding.songSb.max= songService!!.mediaPlayer!!.duration
 
         } catch (e: Exception) {
             return
@@ -120,18 +136,19 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection {
         setSongPosition(increment)
         setLayout()
         createMediaPlayer()
+
     }
 
 
-
     override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-        val binder=service as SongService.MyBinder
-        songService=binder.currentService()
+        val binder = service as SongService.MyBinder
+        songService = binder.currentService()
         createMediaPlayer()
+        songService!!.seekBarSetup()
 
     }
 
     override fun onServiceDisconnected(name: ComponentName?) {
-        songService=null
+        songService = null
     }
 }

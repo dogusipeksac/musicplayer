@@ -6,11 +6,14 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.media.MediaPlayer
 import android.os.Binder
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.support.v4.media.session.MediaSessionCompat
 import androidx.media.app.NotificationCompat
 import com.kube.musicplayer.PlayerActivity
 import com.kube.musicplayer.R
+import com.kube.musicplayer.helper.DateHelper
 import com.kube.musicplayer.helper.ImageHelper
 import java.lang.Exception
 
@@ -19,6 +22,7 @@ class SongService : Service() {
     private var myBinder = MyBinder()
     var mediaPlayer: MediaPlayer? = null
     private lateinit var mediaSession: MediaSessionCompat
+    private lateinit var runnable: Runnable
 
     override fun onBind(intent: Intent?): IBinder {
         mediaSession = MediaSessionCompat(baseContext, "My Song")
@@ -106,9 +110,21 @@ class SongService : Service() {
             PlayerActivity.isPlaying = true
             PlayerActivity.binding.playPauseBtn.setIconResource(R.drawable.pause_icon)
             PlayerActivity.songService!!.showNotification(R.drawable.pause_icon)
+            PlayerActivity.binding.songDurationStartTv.text= DateHelper().formatDuration(mediaPlayer!!.currentPosition.toLong())
+            PlayerActivity.binding.songDurationEndTv.text= DateHelper().formatDuration(mediaPlayer!!.duration.toLong())
+            PlayerActivity.binding.songSb.progress=0
+            PlayerActivity.binding.songSb.max= mediaPlayer!!.duration
 
         } catch (e: Exception) {
             return
         }
+    }
+    fun seekBarSetup(){
+        runnable = Runnable {
+            PlayerActivity.binding.songDurationStartTv.text= DateHelper().formatDuration(mediaPlayer!!.currentPosition.toLong())
+            PlayerActivity.binding.songSb.progress=mediaPlayer!!.currentPosition
+            Handler(Looper.getMainLooper()).postDelayed(runnable,200)
+        }
+        Handler(Looper.getMainLooper()).postDelayed(runnable,0)
     }
 }

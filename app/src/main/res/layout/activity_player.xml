@@ -112,6 +112,7 @@
         android:orientation="horizontal"
         android:layout_margin="10dp">
         <TextView
+            android:id="@+id/song_duration_start_tv"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textSize="15sp"
@@ -119,10 +120,12 @@
             android:text="@string/start_tv"/>
 
         <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/song_sb"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"/>
         <TextView
+            android:id="@+id/song_duration_end_tv"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textSize="15sp"
