@@ -16,6 +16,7 @@
             android:src="@drawable/arrow_back"
             android:backgroundTint="@android:color/transparent"
             app:tint="@color/white"
+            android:padding="5dp"
             />
         <TextView
             android:layout_width="match_parent"
@@ -28,17 +29,21 @@
 
 
     </LinearLayout>
+
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/white"
         app:icon="@drawable/shuffle_icon"
         app:iconSize="35dp"
         app:iconTint="@color/pink"
-        android:backgroundTint="@color/white"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="10dp"
-        app:strokeWidth="2dp"
         app:strokeColor="@color/pink"
-        />
+        android:padding="5dp"
+        app:strokeWidth="2dp" />
 </RelativeLayout>

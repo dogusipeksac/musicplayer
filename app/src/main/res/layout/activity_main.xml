@@ -54,12 +54,14 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/total_song_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/total_songs"
             android:textColor="@color/black"
             android:layout_margin="10dp"/>
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/song_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             />

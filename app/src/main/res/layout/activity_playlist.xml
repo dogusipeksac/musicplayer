@@ -16,6 +16,7 @@
             android:layout_height="50dp"
             android:backgroundTint="@android:color/transparent"
             android:src="@drawable/arrow_back"
+            android:padding="5dp"
             app:tint="@color/white" />
 
         <TextView
@@ -44,5 +45,6 @@
         app:iconSize="35dp"
         app:iconTint="@color/pink"
         app:strokeColor="@color/pink"
+        android:padding="5dp"
         app:strokeWidth="2dp" />
 </RelativeLayout>
