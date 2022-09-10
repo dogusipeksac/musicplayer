@@ -1,27 +1,33 @@
 package com.kube.musicplayer
 
+import android.content.ComponentName
+import android.content.Intent
+import android.content.ServiceConnection
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.IBinder
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.kube.musicplayer.databinding.ActivityPlayerBinding
 import com.kube.musicplayer.databinding.ActivityPlaylistBinding
 import com.kube.musicplayer.model.Song
+import com.kube.musicplayer.service.SongService
 import java.lang.Exception
 
-class PlayerActivity : AppCompatActivity() {
+class PlayerActivity : AppCompatActivity(),ServiceConnection {
 
     companion object {
         lateinit var songListPlayerActivity: ArrayList<Song>
         var songPosition: Int = 0
-        var mediaPlayer: MediaPlayer? = null
         var isPlaying: Boolean = false
+        var songService:SongService?=null
     }
 
     private lateinit var binding: ActivityPlayerBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        startingService()
         initializeLayout()
         getIntents()
 
@@ -34,6 +40,12 @@ class PlayerActivity : AppCompatActivity() {
         binding.nextBtn.setOnClickListener {
             previousOrNextSong(true)
         }
+    }
+
+    private fun startingService() {
+        val intent=Intent( this,SongService::class.java)
+        bindService(intent,this, BIND_AUTO_CREATE)
+        startService(intent)
     }
 
     private fun initializeLayout() {
@@ -49,7 +61,7 @@ class PlayerActivity : AppCompatActivity() {
                 songListPlayerActivity = ArrayList()
                 songListPlayerActivity.addAll(MainActivity.songListMainActivity)
                 setLayout()
-                createMediaPlayer()
+
 
             }
             "MainActivity" -> {
@@ -57,7 +69,7 @@ class PlayerActivity : AppCompatActivity() {
                 songListPlayerActivity.addAll(MainActivity.songListMainActivity)
                 songListPlayerActivity.shuffle()
                 setLayout()
-                createMediaPlayer()
+
             }
         }
     }
@@ -72,11 +84,11 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun createMediaPlayer() {
         try {
-            if (mediaPlayer == null) mediaPlayer = MediaPlayer()
-            mediaPlayer!!.reset()
-            mediaPlayer!!.setDataSource(songListPlayerActivity[songPosition].path)
-            mediaPlayer!!.prepare()
-            mediaPlayer!!.start()
+            if (songService!!.mediaPlayer == null) songService!!.mediaPlayer = MediaPlayer()
+            songService!!.mediaPlayer!!.reset()
+            songService!!.mediaPlayer!!.setDataSource(songListPlayerActivity[songPosition].path)
+            songService!!.mediaPlayer!!.prepare()
+            songService!!.mediaPlayer!!.start()
             isPlaying = true
             binding.playPauseBtn.setIconResource(R.drawable.pause_icon)
         } catch (e: Exception) {
@@ -87,13 +99,13 @@ class PlayerActivity : AppCompatActivity() {
     private fun playSong() {
         binding.playPauseBtn.setIconResource(R.drawable.pause_icon)
         isPlaying = true
-        mediaPlayer!!.start()
+        songService!!.mediaPlayer!!.start()
     }
 
     private fun pauseSong() {
         binding.playPauseBtn.setIconResource(R.drawable.play_icon)
         isPlaying = false
-        mediaPlayer!!.pause()
+        songService!!.mediaPlayer!!.pause()
     }
 
     private fun previousOrNextSong(increment: Boolean) {
@@ -112,5 +124,15 @@ class PlayerActivity : AppCompatActivity() {
                 songPosition = songListPlayerActivity.size - 1
             else --songPosition
         }
+    }
+
+    override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+        val binder=service as SongService.MyBinder
+        songService=binder.currentService()
+        createMediaPlayer()
+    }
+
+    override fun onServiceDisconnected(name: ComponentName?) {
+        songService=null
     }
 }
