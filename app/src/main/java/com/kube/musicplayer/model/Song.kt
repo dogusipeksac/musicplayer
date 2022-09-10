@@ -9,16 +9,20 @@ data class Song(
     val artist: String,
     val duration: Long = 0,
     val path: String,
-    val artUri:String
+    val artUri: String
 )
+
 fun setSongPosition(increment: Boolean) {
-    if (increment) {
-        if (PlayerActivity.songListPlayerActivity.size - 1 == PlayerActivity.songPosition)
-            PlayerActivity.songPosition = 0
-        else ++PlayerActivity.songPosition
-    } else {
-        if (0 == PlayerActivity.songPosition)
-            PlayerActivity.songPosition = PlayerActivity.songListPlayerActivity.size - 1
-        else --PlayerActivity.songPosition
+    if (!PlayerActivity.repeat) {
+        if (increment) {
+            if (PlayerActivity.songListPlayerActivity.size - 1 == PlayerActivity.songPosition)
+                PlayerActivity.songPosition = 0
+            else ++PlayerActivity.songPosition
+        } else {
+            if (0 == PlayerActivity.songPosition)
+                PlayerActivity.songPosition = PlayerActivity.songListPlayerActivity.size - 1
+            else --PlayerActivity.songPosition
+        }
     }
+
 }
