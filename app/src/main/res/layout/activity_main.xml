@@ -5,69 +5,83 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:openDrawer="start"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    tools:openDrawer="start">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/shuttle_btn"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:contentDescription="@string/shuttles_btn"
-                android:drawableTop="@drawable/shuffle_icon"
-                android:text="@string/shuttles_btn"
-                android:textColor="@color/black" />
-
-            <Button
-                android:id="@+id/playlist_btn"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:contentDescription="@string/playlist_btn"
-                android:drawableTop="@drawable/library_music_icon"
-                android:text="@string/playlist_btn"
-                android:textColor="@color/black" />
-
-            <Button
-                android:id="@+id/favorite_btn"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:contentDescription="@string/playlist_btn"
-                android:drawableTop="@drawable/favorite_icon"
-                android:text="@string/favorites_btn"
-                android:textColor="@color/black" />
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/total_song_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/total_songs"
-            android:textColor="@color/black"
-            android:layout_margin="10dp"/>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/song_rv"
-            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="vertical"
-            android:scrollbarThumbVertical="@drawable/scroll_bar_icon"
-            />
-    </LinearLayout>
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/shuttle_btn"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/shuttles_btn"
+                    android:drawableTop="@drawable/shuffle_icon"
+                    android:text="@string/shuttles_btn"
+                    android:textColor="@color/black" />
+
+                <Button
+                    android:id="@+id/playlist_btn"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/playlist_btn"
+                    android:drawableTop="@drawable/library_music_icon"
+                    android:text="@string/playlist_btn"
+                    android:textColor="@color/black" />
+
+                <Button
+                    android:id="@+id/favorite_btn"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/playlist_btn"
+                    android:drawableTop="@drawable/favorite_icon"
+                    android:text="@string/favorites_btn"
+                    android:textColor="@color/black" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/total_song_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="@string/total_songs"
+                android:textColor="@color/black" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/song_rv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbarThumbVertical="@drawable/scroll_bar_icon"
+                android:scrollbars="vertical" />
+        </LinearLayout>
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/now_playing_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:name="com.kube.musicplayer.fragment.NowPlayingFragment"
+            tools:layout="@layout/fragment_now_playing"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navView"
@@ -76,5 +90,5 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/nav_menu"/>
+        app:menu="@menu/nav_menu" />
 </androidx.drawerlayout.widget.DrawerLayout>

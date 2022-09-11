@@ -17,12 +17,14 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.kube.musicplayer.activity.FavoriteActivity
+import com.kube.musicplayer.activity.PlayerActivity
+import com.kube.musicplayer.activity.PlaylistActivity
 import com.kube.musicplayer.adapter.SongAdapter
 import com.kube.musicplayer.databinding.ActivityMainBinding
 import com.kube.musicplayer.model.Song
 import com.kube.musicplayer.model.exitApplication
 import java.io.File
-import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -217,8 +219,6 @@ class MainActivity : AppCompatActivity() {
                     search=true
                     songAdapter.updateSongList(searchList = songListSearch)
                 }
-
-                Toast.makeText(this@MainActivity, newText.toString(), Toast.LENGTH_SHORT).show()
                 return true
             }
         })

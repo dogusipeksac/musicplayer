@@ -1,8 +1,7 @@
-package com.kube.musicplayer
+package com.kube.musicplayer.activity
 
 import android.annotation.SuppressLint
 import android.content.ComponentName
-import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.graphics.Color
@@ -21,16 +20,15 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.kube.musicplayer.MainActivity
+import com.kube.musicplayer.R
 import com.kube.musicplayer.databinding.ActivityPlayerBinding
-import com.kube.musicplayer.databinding.ActivityPlaylistBinding
 import com.kube.musicplayer.helper.DateHelper
 import com.kube.musicplayer.model.Song
 import com.kube.musicplayer.model.exitApplication
 import com.kube.musicplayer.model.setSongPosition
 import com.kube.musicplayer.service.SongService
 import java.lang.Exception
-import kotlin.math.min
-import kotlin.system.exitProcess
 
 class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompletionListener {
 
@@ -51,7 +49,6 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        startingService()
         initializeLayout()
         getIntents()
         buttonActions()
@@ -152,17 +149,27 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
     private fun getIntents() {
         songPosition = intent.getIntExtra("index", 0)
         when (intent.getStringExtra("class")) {
+            "NowPlayingFragment" -> {
+                setLayout()
+                binding.songDurationStartTv.text=DateHelper().formatDuration(songService!!.mediaPlayer!!.currentPosition.toLong())
+                binding.songDurationEndTv.text=DateHelper().formatDuration(songService!!.mediaPlayer!!.duration.toLong())
+                binding.songSb.progress=songService!!.mediaPlayer!!.currentPosition
+                binding.songSb.max= songService!!.mediaPlayer!!.duration
+            }
             "SongAdapterSearch" -> {
+                startingService()
                 songListPlayerActivity = ArrayList()
                 songListPlayerActivity.addAll(MainActivity.songListSearch)
                 setLayout()
             }
             "SongAdapter" -> {
+                startingService()
                 songListPlayerActivity = ArrayList()
                 songListPlayerActivity.addAll(MainActivity.songListMainActivity)
                 setLayout()
             }
             "MainActivity" -> {
+                startingService()
                 songListPlayerActivity = ArrayList()
                 songListPlayerActivity.addAll(MainActivity.songListMainActivity)
                 songListPlayerActivity.shuffle()

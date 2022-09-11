@@ -19,15 +19,15 @@
         android:theme="@style/splash_screen"
         tools:targetApi="31">
         <activity
-            android:name=".PlaylistActivity"
+            android:name=".activity.PlaylistActivity"
             android:screenOrientation="portrait"
             android:exported="false" />
         <activity
-            android:name=".FavoriteActivity"
+            android:name=".activity.FavoriteActivity"
             android:screenOrientation="portrait"
             android:exported="false" />
         <activity
-            android:name=".PlayerActivity"
+            android:name=".activity.PlayerActivity"
             android:screenOrientation="portrait"
             android:exported="false" />
         <activity

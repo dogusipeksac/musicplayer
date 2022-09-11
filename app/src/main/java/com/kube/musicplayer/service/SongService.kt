@@ -11,7 +11,7 @@ import android.os.IBinder
 import android.os.Looper
 import android.support.v4.media.session.MediaSessionCompat
 import androidx.media.app.NotificationCompat
-import com.kube.musicplayer.PlayerActivity
+import com.kube.musicplayer.activity.PlayerActivity
 import com.kube.musicplayer.R
 import com.kube.musicplayer.helper.DateHelper
 import com.kube.musicplayer.helper.ImageHelper

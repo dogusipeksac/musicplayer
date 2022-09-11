@@ -1,6 +1,6 @@
 package com.kube.musicplayer.model
 
-import com.kube.musicplayer.PlayerActivity
+import com.kube.musicplayer.activity.PlayerActivity
 import kotlin.system.exitProcess
 
 data class Song(

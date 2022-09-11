@@ -3,14 +3,13 @@ package com.kube.musicplayer.service
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.kube.musicplayer.PlayerActivity
+import com.kube.musicplayer.activity.PlayerActivity
 import com.kube.musicplayer.R
+import com.kube.musicplayer.fragment.NowPlayingFragment
 import com.kube.musicplayer.model.exitApplication
 import com.kube.musicplayer.model.setSongPosition
-import kotlin.system.exitProcess
 
 class NotificationReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -29,6 +28,7 @@ class NotificationReceiver : BroadcastReceiver() {
         PlayerActivity.songService!!.mediaPlayer!!.start()
         PlayerActivity.songService!!.showNotification(R.drawable.pause_icon)
         PlayerActivity.binding.playPauseBtn.setIconResource(R.drawable.pause_icon)
+        NowPlayingFragment.binding.playPauseBtn.setIconResource(R.drawable.pause_icon)
     }
 
     private fun pauseSong() {
@@ -36,6 +36,7 @@ class NotificationReceiver : BroadcastReceiver() {
         PlayerActivity.songService!!.mediaPlayer!!.pause()
         PlayerActivity.songService!!.showNotification(R.drawable.play_icon)
         PlayerActivity.binding.playPauseBtn.setIconResource(R.drawable.play_icon)
+        NowPlayingFragment.binding.playPauseBtn.setIconResource(R.drawable.play_icon)
     }
 
     private fun previousOrNextSong(increment: Boolean, context: Context) {
@@ -45,8 +46,13 @@ class NotificationReceiver : BroadcastReceiver() {
             .load(PlayerActivity.songListPlayerActivity[PlayerActivity.songPosition].artUri)
             .apply(RequestOptions().placeholder(R.drawable.music_icon).centerCrop())
             .into(PlayerActivity.binding.songIv)
-        PlayerActivity.binding.songTv.text =
-            PlayerActivity.songListPlayerActivity[PlayerActivity.songPosition].title
+        PlayerActivity.binding.songTv.text = PlayerActivity.songListPlayerActivity[PlayerActivity.songPosition].title
+        Glide.with(context)
+            .load(PlayerActivity.songListPlayerActivity[PlayerActivity.songPosition].artUri)
+            .apply(RequestOptions().placeholder(R.drawable.music_icon).centerCrop())
+            .into(NowPlayingFragment.binding.songIm)
+        NowPlayingFragment.binding.songNameTv.text = PlayerActivity.songListPlayerActivity[PlayerActivity.songPosition].title
+
         playSong()
     }
 }
