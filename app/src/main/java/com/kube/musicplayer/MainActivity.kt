@@ -8,10 +8,12 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -29,6 +31,8 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         lateinit var songListMainActivity: ArrayList<Song>
+        lateinit var songListSearch: ArrayList<Song>
+        var search:Boolean=false
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,12 +60,16 @@ class MainActivity : AppCompatActivity() {
         }
         binding.navView.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.navFeedBack -> Toast.makeText(baseContext, "FeedBack", Toast.LENGTH_SHORT).show()
-                R.id.navSettings -> Toast.makeText(baseContext, "Settings", Toast.LENGTH_SHORT).show()
+                R.id.navFeedBack -> Toast.makeText(baseContext, "FeedBack", Toast.LENGTH_SHORT)
+                    .show()
+                R.id.navSettings -> Toast.makeText(baseContext, "Settings", Toast.LENGTH_SHORT)
+                    .show()
                 R.id.navAbout -> Toast.makeText(baseContext, "About", Toast.LENGTH_SHORT).show()
                 R.id.navExit -> {
                     val builder = MaterialAlertDialogBuilder(this)
-                    builder.setTitle("Exit").setMessage("Do you want to close app?").setPositiveButton("Yes") { _, _ -> exitApplication() }.setNegativeButton("No") { dialog, _ -> dialog.dismiss() }
+                    builder.setTitle("Exit").setMessage("Do you want to close app?")
+                        .setPositiveButton("Yes") { _, _ -> exitApplication() }
+                        .setNegativeButton("No") { dialog, _ -> dialog.dismiss() }
                     val customDialog = builder.create()
                     customDialog.show()
                     customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED)
@@ -114,7 +122,6 @@ class MainActivity : AppCompatActivity() {
         if (toogle.onOptionsItemSelected(item))
             return true
         return super.onOptionsItemSelected(item)
-
     }
 
     private fun initializeLayout() {
@@ -127,6 +134,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun adapter() {
+        search=false
         songListMainActivity = getAllAudio()
         binding.songRv.setHasFixedSize(true)
         binding.songRv.setItemViewCacheSize(13)
@@ -191,5 +199,29 @@ class MainActivity : AppCompatActivity() {
         if (!PlayerActivity.isPlaying && PlayerActivity.songService != null) {
             exitApplication()
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.search_view_menu, menu)
+        val searchView = menu?.findItem(R.id.search_view)?.actionView as SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean = true
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                songListSearch= ArrayList()
+                if(newText!=null){
+                    val userInput=newText.toLowerCase()
+                    for (song in songListMainActivity)
+                        if (song.title.toLowerCase().contains(userInput))
+                            songListSearch.add(song)
+                    search=true
+                    songAdapter.updateSongList(searchList = songListSearch)
+                }
+
+                Toast.makeText(this@MainActivity, newText.toString(), Toast.LENGTH_SHORT).show()
+                return true
+            }
+        })
+        return super.onCreateOptionsMenu(menu)
     }
 }

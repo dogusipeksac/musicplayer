@@ -8,6 +8,7 @@ import android.content.ServiceConnection
 import android.graphics.Color
 import android.media.MediaPlayer
 import android.media.audiofx.AudioEffect
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.IBinder
@@ -53,7 +54,11 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         startingService()
         initializeLayout()
         getIntents()
+        buttonActions()
 
+    }
+
+    private fun buttonActions() {
         binding.backBtn.setOnClickListener {
             finish()
         }
@@ -83,7 +88,6 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
                 binding.repeatBtn.setColorFilter(ContextCompat.getColor(this, R.color.pink))
             }
         }
-
         binding.equalizerBtn.setOnClickListener {
             try {
                 val eqIntent = Intent(AudioEffect.ACTION_DISPLAY_AUDIO_EFFECT_CONTROL_PANEL)
@@ -99,20 +103,20 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
             }
         }
         binding.timerBtn.setOnClickListener {
-            val timer=min15 || min30 || min60
-            if(!timer)
-            showBottomSheetDialog()
+            val timer = min15 || min30 || min60
+            if (!timer)
+                showBottomSheetDialog()
             else {
                 val builder = MaterialAlertDialogBuilder(this)
                 builder.setTitle("Stop Timer").setMessage("Do you want to stop timer")
                     .setPositiveButton("Yes") { _, _ ->
-                        min15=false
-                        min30=false
-                        min60=false
+                        min15 = false
+                        min30 = false
+                        min60 = false
                         binding.timerBtn.setColorFilter(ContextCompat.getColor(this, R.color.pink))
                     }
-                    .setNegativeButton("No") {
-                            dialog, _ -> dialog.dismiss()
+                    .setNegativeButton("No") { dialog, _ ->
+                        dialog.dismiss()
                     }
                 val customDialog = builder.create()
                 customDialog.show()
@@ -120,6 +124,16 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
                 customDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.RED)
 
             }
+        }
+        binding.shareBtn.setOnClickListener {
+            val shareIntent = Intent()
+            shareIntent.action = Intent.ACTION_SEND
+            shareIntent.type = "audio/*"
+            shareIntent.putExtra(
+                Intent.EXTRA_STREAM,
+                Uri.parse(songListPlayerActivity[songPosition].path)
+            )
+            startActivity(Intent.createChooser(shareIntent, "Sharing Music File!!"))
         }
     }
 
@@ -138,6 +152,11 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
     private fun getIntents() {
         songPosition = intent.getIntExtra("index", 0)
         when (intent.getStringExtra("class")) {
+            "SongAdapterSearch" -> {
+                songListPlayerActivity = ArrayList()
+                songListPlayerActivity.addAll(MainActivity.songListSearch)
+                setLayout()
+            }
             "SongAdapter" -> {
                 songListPlayerActivity = ArrayList()
                 songListPlayerActivity.addAll(MainActivity.songListMainActivity)
@@ -149,6 +168,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
                 songListPlayerActivity.shuffle()
                 setLayout()
             }
+
         }
     }
 
@@ -207,7 +227,6 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
 
     }
 
-
     override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
         val binder = service as SongService.MyBinder
         songService = binder.currentService()
@@ -248,7 +267,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
             binding.timerBtn.setColorFilter(ContextCompat.getColor(this, R.color.purple_500))
             min15 = true
             Thread {
-                Thread.sleep(15*60000)
+                Thread.sleep(15 * 60000)
                 if (min15) exitApplication()
             }.start()
             dialog.dismiss()
@@ -261,7 +280,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
             binding.timerBtn.setColorFilter(ContextCompat.getColor(this, R.color.purple_500))
             min30 = true
             Thread {
-                Thread.sleep(30*60000)
+                Thread.sleep(30 * 60000)
                 if (min30) exitApplication()
             }.start()
             dialog.dismiss()
@@ -272,7 +291,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
             binding.timerBtn.setColorFilter(ContextCompat.getColor(this, R.color.purple_500))
             min60 = true
             Thread {
-                Thread.sleep(60*60000)
+                Thread.sleep(60 * 60000)
                 if (min60) exitApplication()
             }.start()
             dialog.dismiss()
