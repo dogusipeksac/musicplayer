@@ -41,6 +41,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         var min15: Boolean = false
         var min30: Boolean = false
         var min60: Boolean = false
+        var nowPlayingId:String=""
 
         @SuppressLint("StaticFieldLeak")
         lateinit var binding: ActivityPlayerBinding
@@ -155,6 +156,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
                 binding.songDurationEndTv.text=DateHelper().formatDuration(songService!!.mediaPlayer!!.duration.toLong())
                 binding.songSb.progress=songService!!.mediaPlayer!!.currentPosition
                 binding.songSb.max= songService!!.mediaPlayer!!.duration
+                if(isPlaying) binding.playPauseBtn.setIconResource(R.drawable.pause_icon) else binding.playPauseBtn.setIconResource(R.drawable.play_icon)
             }
             "SongAdapterSearch" -> {
                 startingService()
@@ -208,6 +210,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
             binding.songSb.progress = 0
             binding.songSb.max = songService!!.mediaPlayer!!.duration
             songService!!.mediaPlayer!!.setOnCompletionListener(this)
+            nowPlayingId= songListPlayerActivity[songPosition].id
         } catch (e: Exception) {
             return
         }
@@ -274,7 +277,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
             binding.timerBtn.setColorFilter(ContextCompat.getColor(this, R.color.purple_500))
             min15 = true
             Thread {
-                Thread.sleep(15 * 60000)
+                Thread.sleep((15 * 60000).toLong())
                 if (min15) exitApplication()
             }.start()
             dialog.dismiss()
@@ -287,7 +290,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
             binding.timerBtn.setColorFilter(ContextCompat.getColor(this, R.color.purple_500))
             min30 = true
             Thread {
-                Thread.sleep(30 * 60000)
+                Thread.sleep((30 * 60000).toLong())
                 if (min30) exitApplication()
             }.start()
             dialog.dismiss()
@@ -298,7 +301,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
             binding.timerBtn.setColorFilter(ContextCompat.getColor(this, R.color.purple_500))
             min60 = true
             Thread {
-                Thread.sleep(60 * 60000)
+                Thread.sleep((60 * 60000).toLong())
                 if (min60) exitApplication()
             }.start()
             dialog.dismiss()

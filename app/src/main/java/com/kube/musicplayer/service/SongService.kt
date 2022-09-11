@@ -114,7 +114,7 @@ class SongService : Service() {
             PlayerActivity.binding.songDurationEndTv.text= DateHelper().formatDuration(mediaPlayer!!.duration.toLong())
             PlayerActivity.binding.songSb.progress=0
             PlayerActivity.binding.songSb.max= mediaPlayer!!.duration
-
+            PlayerActivity.nowPlayingId = PlayerActivity.songListPlayerActivity[PlayerActivity.songPosition].id
         } catch (e: Exception) {
             return
         }

@@ -40,10 +40,12 @@ class SongAdapter(private val context: Context, private var songList: ArrayList<
             .load(songList[position].artUri)
             .apply(RequestOptions().placeholder(R.drawable.music_icon).centerCrop())
             .into(holder.image)
-
         holder.root.setOnClickListener {
             when {
                 MainActivity.search -> sendIntent(ref = "SongAdapterSearch", position = position)
+                songList[position].id == PlayerActivity.nowPlayingId -> {
+                    sendIntent(ref = "NowPlayingFragment", PlayerActivity.songPosition)
+                }
                 else -> sendIntent(ref = "SongAdapter", position = position)
             }
 
