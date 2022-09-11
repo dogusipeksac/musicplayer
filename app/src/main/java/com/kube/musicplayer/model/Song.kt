@@ -1,6 +1,7 @@
 package com.kube.musicplayer.model
 
 import com.kube.musicplayer.PlayerActivity
+import kotlin.system.exitProcess
 
 data class Song(
     val id: String,
@@ -25,4 +26,12 @@ fun setSongPosition(increment: Boolean) {
         }
     }
 
+}
+fun exitApplication(){
+    if (PlayerActivity.songService != null) {
+        PlayerActivity.songService!!.stopForeground(true)
+        PlayerActivity.songService!!.mediaPlayer!!.release()
+        PlayerActivity.songService = null
+        exitProcess(1)
+    }
 }

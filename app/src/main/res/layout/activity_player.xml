@@ -152,6 +152,7 @@
             android:layout_weight="1"
             app:tint="@android:color/holo_red_dark" />
         <ImageButton
+            android:id="@+id/equalizer_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
@@ -160,6 +161,7 @@
             android:layout_weight="1"
             app:tint="@android:color/holo_red_dark" />
         <ImageButton
+            android:id="@+id/timer_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"

@@ -18,6 +18,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kube.musicplayer.adapter.SongAdapter
 import com.kube.musicplayer.databinding.ActivityMainBinding
 import com.kube.musicplayer.model.Song
+import com.kube.musicplayer.model.exitApplication
 import java.io.File
 import kotlin.system.exitProcess
 
@@ -55,24 +56,12 @@ class MainActivity : AppCompatActivity() {
         }
         binding.navView.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.navFeedBack -> Toast.makeText(baseContext, "FeedBack", Toast.LENGTH_SHORT)
-                    .show()
-                R.id.navSettings -> Toast.makeText(baseContext, "Settings", Toast.LENGTH_SHORT)
-                    .show()
+                R.id.navFeedBack -> Toast.makeText(baseContext, "FeedBack", Toast.LENGTH_SHORT).show()
+                R.id.navSettings -> Toast.makeText(baseContext, "Settings", Toast.LENGTH_SHORT).show()
                 R.id.navAbout -> Toast.makeText(baseContext, "About", Toast.LENGTH_SHORT).show()
                 R.id.navExit -> {
                     val builder = MaterialAlertDialogBuilder(this)
-                    builder.setTitle("Exit").setMessage("Do you want to close app?")
-                        .setPositiveButton("Yes") { _, _ ->
-                            if (PlayerActivity.songService != null) {
-                                PlayerActivity.songService!!.stopForeground(true)
-                                PlayerActivity.songService!!.mediaPlayer!!.release()
-                                PlayerActivity.songService = null
-                            }
-                            exitProcess(1)
-                        }.setNegativeButton("No") { dialog, _ ->
-                            dialog.dismiss()
-                        }
+                    builder.setTitle("Exit").setMessage("Do you want to close app?").setPositiveButton("Yes") { _, _ -> exitApplication() }.setNegativeButton("No") { dialog, _ -> dialog.dismiss() }
                     val customDialog = builder.create()
                     customDialog.show()
                     customDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED)
@@ -200,10 +189,7 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         if (!PlayerActivity.isPlaying && PlayerActivity.songService != null) {
-            PlayerActivity.songService!!.stopForeground(true)
-            PlayerActivity.songService!!.mediaPlayer!!.release()
-            PlayerActivity.songService = null
-            exitProcess(1)
+            exitApplication()
         }
     }
 }

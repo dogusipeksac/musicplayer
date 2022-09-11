@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.kube.musicplayer.PlayerActivity
 import com.kube.musicplayer.R
+import com.kube.musicplayer.model.exitApplication
 import com.kube.musicplayer.model.setSongPosition
 import kotlin.system.exitProcess
 
@@ -19,12 +20,7 @@ class NotificationReceiver : BroadcastReceiver() {
             ApplicationClass.PLAY -> {
                 if (PlayerActivity.isPlaying) pauseSong() else playSong()
             }
-            ApplicationClass.EXIT -> {
-                PlayerActivity.songService!!.stopForeground(true)
-                PlayerActivity.songService!!.mediaPlayer!!.release()
-                PlayerActivity.songService = null
-                exitProcess(1)
-            }
+            ApplicationClass.EXIT -> { exitApplication() }
         }
     }
 
