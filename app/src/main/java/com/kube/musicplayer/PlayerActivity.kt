@@ -41,6 +41,9 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         initializeLayout()
         getIntents()
 
+        binding.backBtn.setOnClickListener {
+            finish()
+        }
         binding.playPauseBtn.setOnClickListener {
             if (isPlaying) pauseSong() else playSong()
         }
@@ -107,7 +110,12 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
             .apply(RequestOptions().placeholder(R.drawable.music_icon).centerCrop())
             .into(binding.songIv)
         binding.songTv.text = songListPlayerActivity[songPosition].title
-        if (repeat) binding.repeatBtn.setColorFilter(ContextCompat.getColor(this, R.color.purple_500))
+        if (repeat) binding.repeatBtn.setColorFilter(
+            ContextCompat.getColor(
+                this,
+                R.color.purple_500
+            )
+        )
     }
 
     private fun createMediaPlayer() {
