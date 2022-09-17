@@ -1,7 +1,9 @@
 package com.kube.musicplayer.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.kube.musicplayer.R
 import com.kube.musicplayer.adapter.FavouriteAdapter
@@ -30,6 +32,13 @@ class FavouriteActivity : AppCompatActivity() {
         binding.favoriteRv.layoutManager = GridLayoutManager(this@FavouriteActivity,4 )
         favouriteAdapter = FavouriteAdapter(this@FavouriteActivity, favoriteSongs)
         binding.favoriteRv.adapter = favouriteAdapter
+        if(favoriteSongs.size<1) binding.shuffleBtn.visibility=View.INVISIBLE
+         binding.shuffleBtn.setOnClickListener {
+             val intent = Intent(this@FavouriteActivity, PlayerActivity::class.java)
+             intent.putExtra("index", 0)
+             intent.putExtra("class", "FavouriteShuffle")
+             startActivity(intent)
+         }
     }
 
 }

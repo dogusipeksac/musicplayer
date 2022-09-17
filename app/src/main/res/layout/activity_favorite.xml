@@ -44,6 +44,7 @@
         android:scrollbars="vertical" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/shuffle_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -53,10 +54,10 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:backgroundTint="@color/white"
+        android:padding="5dp"
         app:icon="@drawable/shuffle_icon"
         app:iconSize="35dp"
         app:iconTint="@color/pink"
         app:strokeColor="@color/pink"
-        android:padding="5dp"
         app:strokeWidth="2dp" />
 </RelativeLayout>
