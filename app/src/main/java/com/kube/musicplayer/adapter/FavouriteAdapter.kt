@@ -13,8 +13,8 @@ import com.kube.musicplayer.activity.PlayerActivity
 import com.kube.musicplayer.databinding.ItemFavoriteBinding
 import com.kube.musicplayer.model.Song
 
-class FavoriteAdapter(private val context: Context, private var songList: ArrayList<Song>) :
-    RecyclerView.Adapter<FavoriteAdapter.Holder>() {
+class FavouriteAdapter(private val context: Context, private var songList: ArrayList<Song>) :
+    RecyclerView.Adapter<FavouriteAdapter.Holder>() {
 
     class Holder(binding: ItemFavoriteBinding) : RecyclerView.ViewHolder(binding.root) {
         val image=binding.songIm
@@ -37,7 +37,7 @@ class FavoriteAdapter(private val context: Context, private var songList: ArrayL
         holder.root.setOnClickListener{
             val intent = Intent(context, PlayerActivity::class.java)
             intent.putExtra("index", position)
-            intent.putExtra("class", "FavoriteAdapter")
+            intent.putExtra("class", "FavouriteAdapter")
             ContextCompat.startActivity(context, intent, null)
         }
 

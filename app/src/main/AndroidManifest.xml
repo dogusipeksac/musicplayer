@@ -23,7 +23,7 @@
             android:screenOrientation="portrait"
             android:exported="false" />
         <activity
-            android:name=".activity.FavoriteActivity"
+            android:name=".activity.FavouriteActivity"
             android:screenOrientation="portrait"
             android:exported="false" />
         <activity

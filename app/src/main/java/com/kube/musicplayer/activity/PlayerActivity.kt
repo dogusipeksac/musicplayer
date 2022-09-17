@@ -140,11 +140,11 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
             if (isFavorite) {
                 isFavorite = false
                 binding.favoriteBtn.setImageResource(R.drawable.favorite_empty)
-                FavoriteActivity.favoriteSongs.removeAt(fIndex)
+                FavouriteActivity.favoriteSongs.removeAt(fIndex)
             } else {
                 isFavorite = true
                 binding.favoriteBtn.setImageResource(R.drawable.favorite_icon)
-                FavoriteActivity.favoriteSongs.add(songListPlayerActivity[songPosition])
+                FavouriteActivity.favoriteSongs.add(songListPlayerActivity[songPosition])
             }
         }
     }
@@ -182,10 +182,10 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
                 songListPlayerActivity.addAll(MainActivity.songListSearch)
                 setLayout()
             }
-            "FavoriteAdapter" -> {
+            "FavouriteAdapter" -> {
                 startingService()
                 songListPlayerActivity = ArrayList()
-                songListPlayerActivity.addAll(FavoriteActivity.favoriteSongs)
+                songListPlayerActivity.addAll(FavouriteActivity.favoriteSongs)
                 setLayout()
             }
             "SongAdapter" -> {

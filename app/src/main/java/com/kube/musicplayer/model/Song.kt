@@ -1,6 +1,6 @@
 package com.kube.musicplayer.model
 
-import com.kube.musicplayer.activity.FavoriteActivity
+import com.kube.musicplayer.activity.FavouriteActivity
 import com.kube.musicplayer.activity.PlayerActivity
 import kotlin.system.exitProcess
 
@@ -38,7 +38,7 @@ fun exitApplication(){
 }
 fun favoriteChecker(id: String):Int{
     PlayerActivity.isFavorite=false
-    FavoriteActivity.favoriteSongs.forEachIndexed { index, song ->
+    FavouriteActivity.favoriteSongs.forEachIndexed { index, song ->
         if(id==song.id){
             PlayerActivity.isFavorite=true
             return index

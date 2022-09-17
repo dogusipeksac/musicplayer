@@ -17,7 +17,10 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.kube.musicplayer.activity.FavoriteActivity
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
+import com.kube.musicplayer.activity.FavouriteActivity
 import com.kube.musicplayer.activity.PlayerActivity
 import com.kube.musicplayer.activity.PlaylistActivity
 import com.kube.musicplayer.adapter.SongAdapter
@@ -25,6 +28,7 @@ import com.kube.musicplayer.databinding.ActivityMainBinding
 import com.kube.musicplayer.model.Song
 import com.kube.musicplayer.model.exitApplication
 import java.io.File
+import java.lang.reflect.Type
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -34,7 +38,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         lateinit var songListMainActivity: ArrayList<Song>
         lateinit var songListSearch: ArrayList<Song>
-        var search:Boolean=false
+        var search: Boolean = false
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,12 +46,24 @@ class MainActivity : AppCompatActivity() {
         setTheme(R.style.coolPinkNav)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        if (requestRunTimePermission())
+        if (requestRunTimePermission()){
             initializeLayout()
+            //for retrieving favorites data using sharedpreferences
+            FavouriteActivity.favoriteSongs=ArrayList()
+            val editor = getSharedPreferences("FAVOURITES", MODE_PRIVATE)
+            val jsonString= editor.getString("FavouriteSongs",null)
+            val typeToken=object :TypeToken<ArrayList<Song>>(){}.type
+
+            if (jsonString!=null){
+                val data:ArrayList<Song> = GsonBuilder().create().fromJson(jsonString,typeToken)
+                FavouriteActivity.favoriteSongs.addAll(data)
+            }
+        }
+
 
 
         binding.favoriteBtn.setOnClickListener {
-            val intent = Intent(this@MainActivity, FavoriteActivity::class.java)
+            val intent = Intent(this@MainActivity, FavouriteActivity::class.java)
             startActivity(intent)
         }
         binding.playlistBtn.setOnClickListener {
@@ -136,7 +152,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun adapter() {
-        search=false
+        search = false
         songListMainActivity = getAllAudio()
         binding.songRv.setHasFixedSize(true)
         binding.songRv.setItemViewCacheSize(13)
@@ -201,6 +217,12 @@ class MainActivity : AppCompatActivity() {
         if (!PlayerActivity.isPlaying && PlayerActivity.songService != null) {
             exitApplication()
         }
+        //for storie favorites data using sharedpreferences
+        val editor = getSharedPreferences("FAVOURITES", MODE_PRIVATE).edit()
+        val jsonString = GsonBuilder().create().toJson(FavouriteActivity.favoriteSongs)
+        editor.putString("FavouriteSongs",jsonString)
+        editor.apply()
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -210,13 +232,13 @@ class MainActivity : AppCompatActivity() {
             override fun onQueryTextSubmit(query: String?): Boolean = true
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                songListSearch= ArrayList()
-                if(newText!=null){
-                    val userInput=newText.toLowerCase()
+                songListSearch = ArrayList()
+                if (newText != null) {
+                    val userInput = newText.toLowerCase()
                     for (song in songListMainActivity)
                         if (song.title.toLowerCase().contains(userInput))
                             songListSearch.add(song)
-                    search=true
+                    search = true
                     songAdapter.updateSongList(searchList = songListSearch)
                 }
                 return true
