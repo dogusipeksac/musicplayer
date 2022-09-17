@@ -7,6 +7,7 @@
     android:orientation="vertical"
     tools:context=".activity.FavoriteActivity">
     <LinearLayout
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:background="@color/pink"
         android:layout_height="wrap_content">
@@ -30,6 +31,17 @@
 
 
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/favorite_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:layout_marginTop="10dp"
+        android:paddingBottom="40dp"
+        android:scrollbarThumbVertical="@drawable/scroll_bar_icon"
+
+        android:scrollbars="vertical" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:layout_width="wrap_content"

@@ -26,6 +26,7 @@ import com.kube.musicplayer.databinding.ActivityPlayerBinding
 import com.kube.musicplayer.helper.DateHelper
 import com.kube.musicplayer.model.Song
 import com.kube.musicplayer.model.exitApplication
+import com.kube.musicplayer.model.favoriteChecker
 import com.kube.musicplayer.model.setSongPosition
 import com.kube.musicplayer.service.SongService
 import java.lang.Exception
@@ -41,7 +42,9 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         var min15: Boolean = false
         var min30: Boolean = false
         var min60: Boolean = false
-        var nowPlayingId:String=""
+        var nowPlayingId: String = ""
+        var isFavorite: Boolean = false
+        var fIndex: Int = -1
 
         @SuppressLint("StaticFieldLeak")
         lateinit var binding: ActivityPlayerBinding
@@ -133,6 +136,17 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
             )
             startActivity(Intent.createChooser(shareIntent, "Sharing Music File!!"))
         }
+        binding.favoriteBtn.setOnClickListener {
+            if (isFavorite) {
+                isFavorite = false
+                binding.favoriteBtn.setImageResource(R.drawable.favorite_empty)
+                FavoriteActivity.favoriteSongs.removeAt(fIndex)
+            } else {
+                isFavorite = true
+                binding.favoriteBtn.setImageResource(R.drawable.favorite_icon)
+                FavoriteActivity.favoriteSongs.add(songListPlayerActivity[songPosition])
+            }
+        }
     }
 
     private fun startingService() {
@@ -152,16 +166,26 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         when (intent.getStringExtra("class")) {
             "NowPlayingFragment" -> {
                 setLayout()
-                binding.songDurationStartTv.text=DateHelper().formatDuration(songService!!.mediaPlayer!!.currentPosition.toLong())
-                binding.songDurationEndTv.text=DateHelper().formatDuration(songService!!.mediaPlayer!!.duration.toLong())
-                binding.songSb.progress=songService!!.mediaPlayer!!.currentPosition
-                binding.songSb.max= songService!!.mediaPlayer!!.duration
-                if(isPlaying) binding.playPauseBtn.setIconResource(R.drawable.pause_icon) else binding.playPauseBtn.setIconResource(R.drawable.play_icon)
+                binding.songDurationStartTv.text =
+                    DateHelper().formatDuration(songService!!.mediaPlayer!!.currentPosition.toLong())
+                binding.songDurationEndTv.text =
+                    DateHelper().formatDuration(songService!!.mediaPlayer!!.duration.toLong())
+                binding.songSb.progress = songService!!.mediaPlayer!!.currentPosition
+                binding.songSb.max = songService!!.mediaPlayer!!.duration
+                if (isPlaying) binding.playPauseBtn.setIconResource(R.drawable.pause_icon) else binding.playPauseBtn.setIconResource(
+                    R.drawable.play_icon
+                )
             }
             "SongAdapterSearch" -> {
                 startingService()
                 songListPlayerActivity = ArrayList()
                 songListPlayerActivity.addAll(MainActivity.songListSearch)
+                setLayout()
+            }
+            "FavoriteAdapter" -> {
+                startingService()
+                songListPlayerActivity = ArrayList()
+                songListPlayerActivity.addAll(FavoriteActivity.favoriteSongs)
                 setLayout()
             }
             "SongAdapter" -> {
@@ -182,6 +206,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
     }
 
     private fun setLayout() {
+        fIndex = favoriteChecker(songListPlayerActivity[songPosition].id)
         Glide.with(this)
             .load(songListPlayerActivity[songPosition].artUri)
             .apply(RequestOptions().placeholder(R.drawable.music_icon).centerCrop())
@@ -191,6 +216,8 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
             binding.repeatBtn.setColorFilter(ContextCompat.getColor(this, R.color.purple_500))
         if (min15 || min60 || min30)
             binding.timerBtn.setColorFilter(ContextCompat.getColor(this, R.color.purple_500))
+        if (isFavorite) binding.favoriteBtn.setImageResource(R.drawable.favorite_icon)
+        else binding.favoriteBtn.setImageResource(R.drawable.favorite_empty)
     }
 
     private fun createMediaPlayer() {
@@ -210,7 +237,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
             binding.songSb.progress = 0
             binding.songSb.max = songService!!.mediaPlayer!!.duration
             songService!!.mediaPlayer!!.setOnCompletionListener(this)
-            nowPlayingId= songListPlayerActivity[songPosition].id
+            nowPlayingId = songListPlayerActivity[songPosition].id
         } catch (e: Exception) {
             return
         }

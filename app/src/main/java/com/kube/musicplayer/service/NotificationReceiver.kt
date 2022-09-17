@@ -9,6 +9,7 @@ import com.kube.musicplayer.activity.PlayerActivity
 import com.kube.musicplayer.R
 import com.kube.musicplayer.fragment.NowPlayingFragment
 import com.kube.musicplayer.model.exitApplication
+import com.kube.musicplayer.model.favoriteChecker
 import com.kube.musicplayer.model.setSongPosition
 
 class NotificationReceiver : BroadcastReceiver() {
@@ -54,5 +55,8 @@ class NotificationReceiver : BroadcastReceiver() {
         NowPlayingFragment.binding.songNameTv.text = PlayerActivity.songListPlayerActivity[PlayerActivity.songPosition].title
 
         playSong()
+        PlayerActivity.fIndex= favoriteChecker(PlayerActivity.songListPlayerActivity[PlayerActivity.songPosition].id)
+        if (PlayerActivity.isFavorite) PlayerActivity.binding.favoriteBtn.setImageResource(R.drawable.favorite_icon)
+        else PlayerActivity.binding.favoriteBtn.setImageResource(R.drawable.favorite_empty)
     }
 }
