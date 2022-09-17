@@ -208,6 +208,19 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
                 songListPlayerActivity.shuffle()
                 setLayout()
             }
+            "PlaylistDetailsAdapter" -> {
+                startingService()
+                songListPlayerActivity = ArrayList()
+                songListPlayerActivity.addAll(PlaylistActivity.songPlaylist.ref[PlaylistDetailActivity.currentPlaylistPosition].playlist)
+                setLayout()
+            }
+            "PlaylistDetailsShuffle"->{
+                startingService()
+                songListPlayerActivity = ArrayList()
+                songListPlayerActivity.addAll(PlaylistActivity.songPlaylist.ref[PlaylistDetailActivity.currentPlaylistPosition].playlist)
+                songListPlayerActivity.shuffle()
+                setLayout()
+            }
 
         }
     }

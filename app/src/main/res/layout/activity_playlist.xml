@@ -7,6 +7,7 @@
     tools:context=".activity.PlaylistActivity">
 
     <LinearLayout
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/pink">
@@ -16,8 +17,8 @@
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:backgroundTint="@android:color/transparent"
-            android:src="@drawable/arrow_back"
             android:padding="5dp"
+            android:src="@drawable/arrow_back"
             app:tint="@color/white" />
 
         <TextView
@@ -32,7 +33,18 @@
 
     </LinearLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/playlist_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:layout_marginTop="10dp"
+        android:paddingBottom="40dp"
+        android:scrollbarThumbVertical="@drawable/scroll_bar_icon"
+        android:scrollbars="vertical" />
+
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/add_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -42,10 +54,10 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:backgroundTint="@color/white"
+        android:padding="5dp"
         app:icon="@drawable/add_icon"
         app:iconSize="35dp"
         app:iconTint="@color/pink"
         app:strokeColor="@color/pink"
-        android:padding="5dp"
         app:strokeWidth="2dp" />
 </RelativeLayout>

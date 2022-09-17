@@ -13,6 +13,15 @@ data class Song(
     val path: String,
     val artUri: String
 )
+class Playlist{
+    lateinit var name: String
+    lateinit var playlist:ArrayList<Song>
+    lateinit var createdBy:String
+    lateinit var createdON:String
+}
+class SongPlaylist{
+    var ref:ArrayList<Playlist> =ArrayList()
+}
 
 fun setSongPosition(increment: Boolean) {
     if (!PlayerActivity.repeat) {

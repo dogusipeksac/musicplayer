@@ -3,8 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/drawable/add_icon.xml" value="0.1545" />
         <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/drawable/arrow_back.xml" value="0.1905" />
         <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/drawable/before_icon.xml" value="0.1985" />
+        <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/drawable/custom_search_view.xml" value="0.1545" />
         <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/drawable/favorite_icon.xml" value="0.1445" />
         <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/drawable/library_music_icon.xml" value="0.1445" />
         <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/drawable/next_icon.xml" value="0.1985" />
@@ -14,14 +16,19 @@
         <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/drawable/search_icon.xml" value="0.1985" />
         <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/drawable/shuffle_icon.xml" value="0.129" />
         <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/drawable/splash_screen.xml" value="0.1255" />
+        <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/layout-v23/activity_playlist_detail.xml" value="0.23385416666666667" />
         <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/layout/activity_favorite.xml" value="0.176" />
         <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/layout/activity_main.xml" value="0.136" />
         <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/layout/activity_player.xml" value="0.2" />
         <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/layout/activity_playlist.xml" value="0.14270833333333333" />
+        <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/layout/activity_playlist_detail.xml" value="0.25" />
+        <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/layout/activity_selection.xml" value="0.25416666666666665" />
         <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/layout/bottom_sheet_dialog.xml" value="0.23229166666666667" />
+        <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/layout/dialog_add_playlist.xml" value="0.23385416666666667" />
         <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/layout/fragment_now_playing.xml" value="0.16197916666666667" />
         <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/layout/item_favorite.xml" value="0.24583333333333332" />
         <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/layout/item_music.xml" value="0.30833333333333335" />
+        <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/layout/item_playlist.xml" value="0.264" />
         <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/layout/item_song.xml" value="0.36666666666666664" />
         <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/layout/nav_header.xml" value="0.264" />
         <entry key="..\:/Project/MyProject/MusicPlayer/app/src/main/res/menu/nav_menu.xml" value="0.16510416666666666" />

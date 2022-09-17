@@ -16,7 +16,11 @@ import com.kube.musicplayer.databinding.ItemSongBinding
 import com.kube.musicplayer.helper.DateHelper
 import com.kube.musicplayer.model.Song
 
-class SongAdapter(private val context: Context, private var songList: ArrayList<Song>) :
+class SongAdapter(
+    private val context: Context,
+    private var songList: ArrayList<Song>,
+    private var playlistDetails: Boolean = false
+) :
     RecyclerView.Adapter<SongAdapter.Holder>() {
 
     class Holder(binding: ItemSongBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -40,17 +44,30 @@ class SongAdapter(private val context: Context, private var songList: ArrayList<
             .load(songList[position].artUri)
             .apply(RequestOptions().placeholder(R.drawable.music_icon).centerCrop())
             .into(holder.image)
-        holder.root.setOnClickListener {
-            when {
-                MainActivity.search -> sendIntent(ref = "SongAdapterSearch", position = position)
-                songList[position].id == PlayerActivity.nowPlayingId -> {
-                    sendIntent(ref = "NowPlayingFragment", PlayerActivity.songPosition)
+        when {
+            playlistDetails -> {
+                holder.root.setOnClickListener {
+                    sendIntent(ref = "PlaylistDetailsAdapter", PlayerActivity.songPosition)
                 }
-                else -> sendIntent(ref = "SongAdapter", position = position)
             }
+            else -> {
+                holder.root.setOnClickListener {
+                    when {
+                        MainActivity.search -> sendIntent(
+                            ref = "SongAdapterSearch",
+                            position = position
+                        )
+                        songList[position].id == PlayerActivity.nowPlayingId -> {
+                            sendIntent(ref = "NowPlayingFragment", PlayerActivity.songPosition)
+                        }
+                        else -> sendIntent(ref = "SongAdapter", position = position)
+                    }
 
 
+                }
+            }
         }
+
     }
 
     override fun getItemCount(): Int {
